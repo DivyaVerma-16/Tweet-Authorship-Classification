@@ -115,8 +115,6 @@ bert_inputs
 
 """So there are actually three outputs: the input ids (starting with '101' for the '[CLS]' token), the token_type_ids which are usefull when one has distinct segments, and the attention masks which are used to mask out padding tokens.
 
-Please refer to our Lab 4 for more details about input_ids, token_type_ids, and attention_masks.
-
 More resources:
 *    https://huggingface.co/docs/transformers/preprocessing
 *    https://huggingface.co/docs/transformers/tokenizer_summary
@@ -212,7 +210,7 @@ This is a classification task known as "authorship attribution", which is the ta
 ### Tasks
 *   For the first classifier, we use any non-deep learning based methods.
 *   For the second classifier, try the following methods
-    *    Fine-tune BERT (similar to our Lab 5 Fine-tune BERT for Sentiment Analysis)
+    *    Fine-tune BERT 
     *    Use pre-trained word embedding (useful to check: https://keras.io/examples/nlp/pretrained_word_embeddings/)
     *    Train a deep neural network (e.g., CNN, RNN, Bi-LSTM) from scratch, similar to notebooks from our textbook:
         *    https://github.com/the-deep-learners/deep-learning-illustrated/blob/master/notebooks/dense_sentiment_classifier.ipynb
