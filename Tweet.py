@@ -1,20 +1,20 @@
 
 """
-
 ################################################################################
 # TODO: Fill in your codes                                                     #
 # Import packages or modules                                                   #
 ################################################################################
+"""
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
 
-"""## Part I: Explore Word Embedding (15%)
+## Part I: Explore Word Embedding (15%)
 
 Word embeddings are useful representation of words that capture information about word meaning as well as location. They are used as a fundamental component for downstream NLP tasks, e.g., text classification. In this part, we will explore the embeddings produced by [GloVe (global vectors for word representation)](https://nlp.stanford.edu/projects/glove/). It is simlar to Word2Vec but differs in their underlying methodology: in GloVe, word embeddings are learned based on global word-word co-occurrence statistics. Both Word2Vec and GloVe tend to produce vector-space embeddings that perform similarly in downstream NLP tasks.
 
 We first load the GloVe vectors
-"""
+
 
 import gensim.downloader as api
 # download the model and return as object ready for use
@@ -25,8 +25,7 @@ glove_word_vectors = api.load('glove-wiki-gigaword-100')
 print('vocabulary size = ', len(glove_word_vectors.index_to_key))
 print('embedding dimensionality = ', glove_word_vectors['happy'].shape)
 
-"""
-What is embedding exactly?"""
+
 
 # Check word embedding for 'happy'
 # You can access the embedding of a word with glove_word_vectors[word] if word
@@ -38,9 +37,6 @@ glove_word_vectors['happy']
 For each of the following words in occupation, compute its cosine similarty to 'woman' and its similarity to 'man' and check which gender is more similar.
 
 *occupation = {homemaker, nurse, receptionist, librarian, socialite, hairdresser, nanny, bookkeeper, stylist, housekeeper, maestro, skipper, protege, philosopher, captain, architect, financier, warrior, broadcaster, magician}*
-
-
-
 """
 
 ################################################################################
@@ -77,8 +73,6 @@ For example, let us compare the context-based embedding vectors for 'orange' in 
 * "I love eating oranges"
 * "My favorite fruits are oranges and apples"
 * "The sky turned orange"
-
-Same as in "Lab 5 BERT", we use the BERT model and tokenizer from the Huggingface transformer library ([1](https://huggingface.co/course/chapter1/1), [2](https://huggingface.co/docs/transformers/quicktour))
 """
 
 # Note that we need to install the latest version of transformers
@@ -137,7 +131,7 @@ print('shape of second output: \t', bert_outputs[1].shape)
 
 """There are two outputs here: one with dimensions [3, 10, 768] and one with [3, 768]. The first one [batch_size, sequence_length, embedding_size] is the output of the last layer of the Bert model and are the contextual embeddings of the words in the input sequence. The second output [batch_size, embedding_size] is the embedding of the first token of the sequence (i.e., classification token).
 
-Note you can also get the first output through bert_output.last_hidden_state (see below, also check https://huggingface.co/docs/transformers/v4.16.2/en/model_doc/bert#transformers.TFBertModel)
+Note we can also get the first output through bert_output.last_hidden_state (see below, also check https://huggingface.co/docs/transformers/v4.16.2/en/model_doc/bert#transformers.TFBertModel)
 
 We need the first output to get contextualized embeddings for 'orange' in each sentence.
 """
@@ -168,42 +162,14 @@ cosine_similarities(oranges)
 
 """The similarity metrics make sense. The 'orange' in "The sky turned orange" is different from the rest.
 
-Next, please compare the contextual embedding vectors of 'bank' in the following four sentences:
-
+Next, compare the contextual embedding vectors of 'bank' in the following four sentences:
 
 *   "I need to bring my money to the bank today"
 *   "I will need to bring my money to the bank tomorrow"
 *   "I had to bank into a turn"
 *   "The bank teller was very nice"
 
-
-**Inline Question #1:**
-
-- Please calculate the pair-wise cosine similarities between 'bank' in the four sentences and fill in the table below. (Note, bank_i represent bank in the i_th sentence)
-- Please explain the results. Does it make sense?
-
-**Your Answer:**
-
-| `similarity`|  bank_1  |  bank_2  |  bank_3  |  bank_4  |
-|-------------|----------|----------|----------|----------|
-| bank_1      |    1.0      | 0.99         | 0.59        |  0.86        |
-| bank_2      |    0.99      | 1.0         | 0.59        |  0.87        |
-| bank_3      |    0.59      | 0.59         | 1.0         |  0.62        |
-| bank_4      |    0.86     |  0.87        |  0.62        |   0.99       |
-
-bank_1 and bank_2: These sentences are quite similar in meaning, just differing in the timing. Hence, it's expected to see a very high similarity between their contextual embeddings.
-
-bank_1 and bank_3: These sentences are semantically quite different. In the first sentence, 'bank' is used in the sense of a financial institution, whereas in the third sentence, 'bank' is used as a verb meaning to tilt or incline. Thus, the cosine similarity is relatively lower, indicating less similarity in meaning.
-
-bank_1 and bank_4: Although these sentences are different, they both relate to financial institutions. However, the contextual usage differs slightly. Hence, we observe a relatively high cosine similarity, but slightly lower compared to bank_1 and bank_2.
-
-bank_2 and bank_3: Similar to bank_1 and bank_3, these sentences have different semantic meanings, resulting in lower cosine similarity.
-
-bank_2 and bank_4: Similar to bank_1 and bank_4, these sentences relate to financial institutions, but with slightly different contextual usage. Hence, the cosine similarity is relatively high.
-
-bank_3 and bank_4: These sentences are quite different in meaning, with 'bank' used as a verb in one and as a noun in the other. Thus, the cosine similarity is relatively low.
 """
-
 bert_model = TFBertModel.from_pretrained('bert-base-cased')
 bert_tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
 
@@ -240,22 +206,12 @@ cosine_similarities(banks)
 
 """## Part III Text classification
 
-In this part, you will build text classifiers that try to infer whether tweets from [@realDonaldTrump](https://twitter.com/realDonaldTrump) were written by Trump himself or by a staff person.
 This is an example of binary classification on a text dataset.
-
-It is known that Donald Trump uses an Android phone, and it has been observed that some of his tweets come from Android while others come from other devices (most commonly iPhone). It is widely believed that Android tweets are written by Trump himself, while iPhone tweets are written by other staff. For more information, you can read this [blog post by David Robinson](http://varianceexplained.org/r/trump-tweets/), written prior to the 2016 election, which finds a number of differences in the style and timing of tweets published under these two devices. (Some tweets are written from other devices, but for simplicity the dataset for this assignment is restricted to these two.)
-
 This is a classification task known as "authorship attribution", which is the task of inferring the author of a document when the authorship is unknown. We will see how accurately this can be done with linear classifiers using word features.
 
-You might find it familiar: Yes! We are using the same data set as your homework 2 from MSBC 5180.
-
 ### Tasks
-
-In this section, you will build two text classifiers: one with a traditional machine learning method that you studied in MSBC.5190 and one with a deep learning method.
-
-
-*   For the first classifier, you can use any non-deep learning based methods. You can use your solution to Homework 2 of MSBC 5180 here.
-*   For the second classifier, you may try the following methods
+*   For the first classifier, we use any non-deep learning based methods.
+*   For the second classifier, try the following methods
     *    Fine-tune BERT (similar to our Lab 5 Fine-tune BERT for Sentiment Analysis)
     *    Use pre-trained word embedding (useful to check: https://keras.io/examples/nlp/pretrained_word_embeddings/)
     *    Train a deep neural network (e.g., CNN, RNN, Bi-LSTM) from scratch, similar to notebooks from our textbook:
@@ -266,7 +222,7 @@ In this section, you will build two text classifiers: one with a traditional mac
         *    https://github.com/the-deep-learners/deep-learning-illustrated/blob/master/notebooks/bi_lstm_sentiment_classifier.ipynb
     *   There are also lots of useful resources on Keras website: https://keras.io/examples/nlp/
 
-You may want to split the current training data to train and validation to help model selection. Please do not use test data for model selection.
+Try to split the current training data to train and validation to help model selection.
 
 ### Load the Data Set
 """
@@ -277,10 +233,9 @@ drive.mount('/content/drive')
 import os
 os.chdir ("/content/drive/My Drive/Modern Ai homework 2")
 
-"""#### Sample code to load raw text###
+"""#### Sample code to load raw text###"""
 
-Please download `tweets.train.tsv` and `tweets.test.tsv` from Canvas (Module Assignment) and upload them to Google Colab. Here we load raw text data to text_train and text_test.
-"""
+
 
 import pandas as pd
 import numpy as np
@@ -306,12 +261,8 @@ text_train[:5]
 
 y_train[:5]
 
-"""#### Sample code to preprocess data for BERT (only needed if you decide to fine-tune BERT) ####
+"""#### Sample code to preprocess data for BERT (only needed if you decide to fine-tune BERT) #### """
 
-The pre-processing step is similar to Lab 5.
-
-Feel free to dispose it if you want to preprocess the data differently and use methods other than BERT.
-"""
 
 # The longest text in the data is 75 and we use it as the max_length
 max_length = 75
@@ -331,8 +282,7 @@ x_test = bert_tokenizer(text_test,
 
 y_test = np.array([1 if v == 'Android' else 0 for v in Y_test])
 
-"""### Your Solution 1: A traditional machine learning approach (30%)
-
+"""
 Features Used: The features used in this model are the counts of each word in the vocabulary extracted from the text data using the CountVectorizer.
 
 Model Performance on Test Data: The accuracy on the test set can be obtained from the accuracy score calculated using the true labels and the predicted labels. This accuracy score gives us an idea of how well the model generalizes to unseen data.
