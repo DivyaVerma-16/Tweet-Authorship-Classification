@@ -34,9 +34,6 @@ For each of the following words in occupation, compute its cosine similarty to '
 *occupation = {homemaker, nurse, receptionist, librarian, socialite, hairdresser, nanny, bookkeeper, stylist, housekeeper, maestro, skipper, protege, philosopher, captain, architect, financier, warrior, broadcaster, magician}*
 """
 
-################################################################################
-# TODO: Fill in your codes                                                     #                                                          #
-################################################################################
 from sklearn.metrics.pairwise import cosine_similarity
 woman_vector = glove_word_vectors['woman'].reshape(1, -1)
 man_vector = glove_word_vectors['man'].reshape(1, -1)
@@ -281,9 +278,6 @@ Features Used: The features used in this model are the counts of each word in th
 Model Performance on Test Data: The accuracy on the test set can be obtained from the accuracy score calculated using the true labels and the predicted labels. This accuracy score gives us an idea of how well the model generalizes to unseen data.
 """
 
-################################################################################
-# TODO: Fill in your codes                                                     #
-################################################################################
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 vectorizer = CountVectorizer(max_features=5000)
@@ -299,9 +293,6 @@ accuracy = accuracy_score(y_test, y_pred)
 
 print("Accuracy on test set:", accuracy)
 
-################################################################################
-# TODO: Fill in your codes                                                     #
-################################################################################
 import tensorflow as tf
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
