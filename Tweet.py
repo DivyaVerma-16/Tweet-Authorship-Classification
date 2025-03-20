@@ -1,10 +1,5 @@
 
-"""
-################################################################################
-# TODO: Fill in your codes                                                     #
-# Import packages or modules                                                   #
-################################################################################
-"""
+
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
